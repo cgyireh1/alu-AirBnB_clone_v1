@@ -8,6 +8,8 @@ from fabric.api import env, local, put, run
 from datetime import datetime
 from os.path import exists, isdir
 env.hosts = ['34.204.50.206', '3.93.60.31']
+
+
 def do_pack():
     """generates a tgz archive"""
     try:
@@ -19,13 +21,16 @@ def do_pack():
         return file_name
     except:
         return None
+
+
 def do_deploy(archive_path):
     """distributes an archive to the web servers"""
     if not exists(archive_path):
         return False
     try:
         archive_file = archive_path.split("/")[-1]
-        release_f = "/data/web_static/releases/".format(archive_file.split(".")[0])
+        release_f = "/data/web_static/releases/" + \ 
+        "{}".format(archive_file.split(".")[0])
         put(archive_path, '/tmp/')
         run('mkdir -p {}/'.format(release_f))
         run('tar -xzf /tmp/{} -C {}/'.format(archive_file, release_f))
@@ -37,6 +42,8 @@ def do_deploy(archive_path):
         return True
     except:
         return False
+
+
 def deploy():
     """creates and distributes an archive to the web servers"""
     archive_path = do_pack()
