@@ -8,16 +8,18 @@ from fabric.api import put, run, env
 from os.path import exists
 env.hosts = ['34.204.50.206', '3.93.60.31']
 
+
 def do_deploy(archive_path):
     """distributes an archive to the web servers"""
     if not exists(archive_path):
         return False
     try:
         archive_file = archive_path.split("/")[-1]
-        release_f = "/data/web_static/releases/".format(archive_file.split(".")[0])
+        release_f = "/data/web_static/releases/" + \
+                    "{}".format(archive_file.split(".")[0])
         put(archive_path, '/tmp/')
-      
-        run('mkdir -p {}/'.format( release_f))
+
+        run('mkdir -p {}/'.format(release_f))
         run('tar -xzf /tmp/{} -C {}/'.format(archive_file, release_f))
         run('rm /tmp/{}'.format(archive_file))
         run('mv {0}{1}/web_static/* {0}{1}/'.format(release_f))
