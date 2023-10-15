@@ -7,6 +7,7 @@ Wites a fabric script to genereate tgz archive
 from datetime import datetime
 from fabric.api import local
 
+
 def do_pack():
     """
     Makes an archive on web_static folder
